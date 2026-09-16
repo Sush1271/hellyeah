@@ -460,9 +460,3 @@ Conditions:
 - ✅ About, Skills, Projects, and Contact sections
 - ✅ README documentation
 
----
-
-**Built with 🚀 by Sushant** — *"Curious by nature. Building by choice."*
-
-> *"Si te caes siete veces, levántate ocho."*
-> *(If you fall seven times, get up eight.)*
