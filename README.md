@@ -1,8 +1,5 @@
 # 🚀 Sushant's Portfolio — A Cosmic Journey
 
-> *"Curious by nature. Building by choice."*
-> *"Si te caes siete veces, levántate ocho"*
-
 A visually stunning, spaceship-themed personal portfolio website built to showcase projects, skills, and professional background as a Full Stack Developer. Features an interactive canvas starfield, animated spaceship, glassmorphism cards, and parallax mouse-tracking effects.
 
 ---
