@@ -345,14 +345,14 @@ function renderBoot() {
 }
 function bootTick() {
   if (loaderDone) return;
-  bootProgress += Math.max((bootTarget - bootProgress) * 0.07, 0.15);
-  if (bootTarget >= 100 && bootProgress >= 99.4) {
+  // Always marches forward — never stalls, finishes as soon as work is done
+  bootProgress += Math.max((bootTarget - bootProgress) * 0.07, 0.35);
+  if (bootProgress >= 100 || (bootTarget >= 100 && bootProgress >= 99)) {
     bootProgress = 100;
     renderBoot();
-    setTimeout(finishLoad, 350);
+    setTimeout(finishLoad, 300);
     return;
   }
-  if (bootProgress > 99) bootProgress = 99;
   renderBoot();
   requestAnimationFrame(bootTick);
 }
@@ -1087,33 +1087,73 @@ if (contactForm) {
   });
 }
 
-/* ===== MARQUEE (JS-DRIVEN, ALWAYS SMOOTH) ===== */
-const marqueeTrack = document.querySelector('.marquee-track');
-const marqueeBox = document.querySelector('.marquee');
-let marqueeX = 0;
+/* ===== ARSENAL MARQUEE (DUAL TRACK, JS-DRIVEN) ===== */
+const TECH_INFO = {
+  'React': 'component UI library — my daily driver',
+  'TypeScript': 'types that save me at 2am',
+  'Next.js': 'React framework for production',
+  'Node.js': 'APIs and microservices',
+  'Tailwind': 'utility-first styling',
+  'AWS': 'cloud home base',
+  'Python': 'scripting, APIs and AI glue',
+  'Docker': 'ships anywhere',
+  'PostgreSQL': 'relational workhorse',
+  'Go': 'fast, tiny binaries',
+  'Linux': 'home turf — btw I use Arch',
+  'AI/ML': 'current obsession',
+};
+// Clone each row's content for a seamless loop (clones stay out of tab order)
+document.querySelectorAll('.marquee-track').forEach(track => {
+  const orig = track.querySelector('span');
+  if (!orig || track.querySelectorAll('span').length > 1) return;
+  const clone = orig.cloneNode(true);
+  clone.setAttribute('aria-hidden', 'true');
+  clone.querySelectorAll('button').forEach(b => { b.tabIndex = -1; });
+  track.appendChild(clone);
+});
+const marqueeTracks = Array.from(document.querySelectorAll('.marquee-track')).map(el => ({
+  el, x: 0, ready: false, hover: false,
+  dir: parseFloat(el.dataset.dir || '1'),
+  speed: parseFloat(el.dataset.speed || '65'),
+}));
 let marqueeLast = 0;
-let marqueeHover = false;
-let marqueeVisible = true;
+let marqueesVisible = true;
 function marqueeStep(t) {
   requestAnimationFrame(marqueeStep);
-  if (!marqueeTrack) return;
+  if (!marqueeTracks.length) return;
   const calm = document.documentElement.classList.contains('reduce-motion');
-  if (marqueeHover || !marqueeVisible || document.hidden || calm) { marqueeLast = t; return; }
+  if (document.hidden || calm) { marqueeLast = t; return; }
   if (!marqueeLast) marqueeLast = t;
   const dt = Math.min((t - marqueeLast) / 1000, 0.05);
   marqueeLast = t;
-  const half = marqueeTrack.scrollWidth / 2;
-  if (half <= 0) return;
-  marqueeX -= 65 * dt;
-  if (-marqueeX >= half) marqueeX += half;
-  marqueeTrack.style.transform = `translateX(${marqueeX}px)`;
+  if (!marqueesVisible) return;
+  marqueeTracks.forEach(m => {
+    if (m.hover) return;
+    const half = m.el.scrollWidth / 2;
+    if (half <= 0) return;
+    if (!m.ready) { m.ready = true; if (m.dir < 0) m.x = -half; }
+    m.x += m.dir * m.speed * dt;
+    if (m.dir > 0) { if (-m.x >= half) m.x += half; }
+    else if (m.x >= 0) { m.x -= half; }
+    m.el.style.transform = `translateX(${m.x}px)`;
+  });
 }
-if (marqueeBox && marqueeTrack) {
-  marqueeBox.addEventListener('mouseenter', () => { marqueeHover = true; });
-  marqueeBox.addEventListener('mouseleave', () => { marqueeHover = false; });
-  new IntersectionObserver((entries) => { marqueeVisible = entries[0].isIntersecting; }, { threshold: 0 }).observe(marqueeBox);
-  requestAnimationFrame(marqueeStep);
+document.querySelectorAll('.marquee').forEach(box => {
+  const track = marqueeTracks.find(m => m.el.parentElement === box);
+  box.addEventListener('mouseenter', () => { if (track) track.hover = true; });
+  box.addEventListener('mouseleave', () => { if (track) track.hover = false; });
+});
+const arsenalBox = document.querySelector('.arsenal');
+if (arsenalBox) {
+  new IntersectionObserver((entries) => { marqueesVisible = entries[0].isIntersecting; }, { threshold: 0 }).observe(arsenalBox);
 }
+if (marqueeTracks.length) requestAnimationFrame(marqueeStep);
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('.tick');
+  if (!t || t.tabIndex === -1) return;
+  const name = t.dataset.tech;
+  showToast(`${name} — ${TECH_INFO[name] || 'in the arsenal'}`, 'info', 'fa-microchip');
+});
 
 /* ===== PREFS BOOT ===== */
 loadPrefs();

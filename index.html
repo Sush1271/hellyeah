@@ -1092,11 +1092,36 @@
       mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
     }
     .marquee-track { display: flex; width: max-content; will-change: transform; }
-    .marquee-track span {
-      font-family: 'Orbitron', sans-serif; font-size: 0.72rem; letter-spacing: 0.25em;
-      color: #475569; white-space: nowrap;
+    .marquee-track span { display: flex; align-items: center; }
+    .arsenal { position: relative; z-index: 1; padding: 1.5rem 0 1.3rem; }
+    .arsenal-label {
+      text-align: center; font-family: 'Orbitron', sans-serif; font-size: 0.68rem;
+      letter-spacing: 0.3em; text-transform: uppercase; color: #64748b; margin-bottom: 1.1rem;
     }
-    .marquee-track span b { color: var(--t1); font-weight: 400; margin-right: 2.5rem; }
+    .arsenal-label span { color: var(--t1); }
+    .label-tape {
+      border-top: 1px dashed rgba(255,255,255,0.12);
+      border-bottom: 1px dashed rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.015);
+      padding: 0.5rem 0; margin-bottom: 1.1rem;
+    }
+    .label-tape .marquee-track span {
+      display: block; font-family: 'Orbitron', sans-serif; font-size: 0.68rem;
+      letter-spacing: 0.3em; text-transform: uppercase; color: #64748b; white-space: nowrap;
+    }
+    .label-tape em { font-style: normal; color: var(--t1); }
+    .label-tape b { font-weight: 400; color: var(--t1); }
+    .label-tape i { font-style: normal; color: #334155; margin: 0 1.5rem; }
+    .marquee + .marquee { margin-top: 0.7rem; }
+    .tick {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
+      color: #94a3b8; border-radius: var(--radius-full); padding: 0.45rem 1.05rem;
+      margin-right: 0.9rem; font-family: 'Orbitron', sans-serif; font-size: 0.68rem;
+      letter-spacing: 0.18em; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+    }
+    .tick i { color: var(--t1); font-style: normal; font-size: 0.65rem; }
+    .tick:hover { color: #fff; border-color: var(--t1); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,212,255,0.2); }
 
     /* Footer */
     .footer-grid {
@@ -1317,10 +1342,21 @@
   </section>
 
   <!-- About -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>REACT <b>✦</b> TYPESCRIPT <b>✦</b> NEXT.JS <b>✦</b> NODE.JS <b>✦</b> PYTHON <b>✦</b> DOCKER <b>✦</b> AWS <b>✦</b> TAILWIND <b>✦</b> POSTGRESQL <b>✦</b> GO <b>✦</b> LINUX <b>✦</b> AI / ML <b>✦</b></span>
-      <span>REACT <b>✦</b> TYPESCRIPT <b>✦</b> NEXT.JS <b>✦</b> NODE.JS <b>✦</b> PYTHON <b>✦</b> DOCKER <b>✦</b> AWS <b>✦</b> TAILWIND <b>✦</b> POSTGRESQL <b>✦</b> GO <b>✦</b> LINUX <b>✦</b> AI / ML <b>✦</b></span>
+  <div class="arsenal" aria-label="Technology arsenal">
+    <div class="marquee label-tape">
+      <div class="marquee-track" data-dir="1" data-speed="30">
+        <span><em>ARSENAL</em> <b>//</b> TECH I SHIP WITH — CLICK ANY PILL <i>✦</i> <em>ARSENAL</em> <b>//</b> TECH I SHIP WITH — CLICK ANY PILL <i>✦</i> <em>ARSENAL</em> <b>//</b> TECH I SHIP WITH — CLICK ANY PILL <i>✦</i> <em>ARSENAL</em> <b>//</b> TECH I SHIP WITH — CLICK ANY PILL <i>✦</i> <em>ARSENAL</em> <b>//</b> TECH I SHIP WITH — CLICK ANY PILL <i>✦</i> <em>ARSENAL</em> <b>//</b> TECH I SHIP WITH — CLICK ANY PILL <i>✦</i></span>
+      </div>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track" data-dir="1" data-speed="70">
+        <span><button class="tick" data-tech="React"><i>✦</i>REACT</button><button class="tick" data-tech="TypeScript"><i>✦</i>TYPESCRIPT</button><button class="tick" data-tech="Next.js"><i>✦</i>NEXT.JS</button><button class="tick" data-tech="Node.js"><i>✦</i>NODE.JS</button><button class="tick" data-tech="Tailwind"><i>✦</i>TAILWIND</button><button class="tick" data-tech="AWS"><i>✦</i>AWS</button></span>
+      </div>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track" data-dir="-1" data-speed="50">
+        <span><button class="tick" data-tech="Python"><i>✦</i>PYTHON</button><button class="tick" data-tech="Docker"><i>✦</i>DOCKER</button><button class="tick" data-tech="PostgreSQL"><i>✦</i>POSTGRESQL</button><button class="tick" data-tech="Go"><i>✦</i>GO</button><button class="tick" data-tech="Linux"><i>✦</i>LINUX</button><button class="tick" data-tech="AI/ML"><i>✦</i>AI / ML</button></span>
+      </div>
     </div>
   </div>
   <section id="about">
